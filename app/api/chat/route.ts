@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Groq from "groq-sdk";
+import { Groq } from "groq-sdk";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -14,18 +14,22 @@ export async function POST(req: Request) {
         {
           role: "system",
           content:
-            "Você é uma IA especialista em investimentos e educação financeira.",
+            "Você é uma IA financeira educacional. Explique investimentos de forma simples. Não recomende compra ou venda direta.",
         },
         {
           role: "user",
           content: message,
         },
       ],
-      model: "llama-3.1-8b-instant",
+      model: "openai/gpt-oss-120b",
+      temperature: 1,
+      max_completion_tokens: 1024,
+      top_p: 1,
+      stream: false,
     });
 
     return NextResponse.json({
-      reply: chatCompletion.choices[0]?.message?.content,
+      reply: chatCompletion.choices[0]?.message?.content || "Sem resposta.",
     });
   } catch (error) {
     console.error(error);
