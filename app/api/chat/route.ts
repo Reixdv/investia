@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 
+export async function GET() {
+  return NextResponse.json({
+    status: "API funcionando",
+  });
+}
+
 export async function POST(req: Request) {
-  const { message } = await req.json();
+  const body = await req.json();
 
   return NextResponse.json({
-    reply: "TESTE FUNCIONANDO: " + message,
+    reply: "TESTE OK. Você perguntou: " + body.message,
   });
 }
